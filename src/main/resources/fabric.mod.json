@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "aimtracker",
+  "version": "${version}",
+  "name": "Aim Tracker",
+  "description": "Hotkey-controlled camera snap-to-target for players.",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.example.aimtracker.AimTrackerClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
