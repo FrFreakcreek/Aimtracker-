@@ -38,11 +38,16 @@ public final class CameraHandler {
         float dyaw = MathHelper.wrapDegrees(targetYaw - me.getYaw());
         float dpitch = targetPitch - me.getPitch();
 
+        // Tiny deadzone: stop nudging once we're basically on target (prevents micro-jitter).
+        if (Math.abs(dyaw) < 0.05f && Math.abs(dpitch) < 0.05f) return;
+
         // Fraction of the remaining angle covered each tick: 1.0 = instant snap.
         float alpha = (float) MathHelper.clamp(cfg.smoothing, 0.0, 1.0);
 
-        me.setYaw(me.getYaw() + dyaw * alpha);
-        me.setPitch(MathHelper.clamp(me.getPitch() + dpitch * alpha, -90.0f, 90.0f));
+        // Use the same path as real mouse movement. It rotates the view AND shifts the
+        // "previous" rotation by the same amount, so the game's frame interpolation stays
+        // smooth. (changeLookDirection multiplies its inputs by 0.15 internally.)
+        me.changeLookDirection(dyaw * alpha / 0.15, dpitch * alpha / 0.15);
     }
 
     private CameraHandler() {}
